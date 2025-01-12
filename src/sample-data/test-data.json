@@ -1,0 +1,15 @@
+[
+  {
+    "x": [1, 2, 3, 4, 5],
+    "y": [10, 15, 13, 17, 21],
+    "type": "scatter",
+    "mode": "lines+markers",
+    "marker": { "color": "red" },
+  },
+  {
+    "x": [1, 2, 3, 4, 5],
+    "y": [16, 5, 11, 9, 12],
+    "type": "bar",
+    "marker": { "color": "blue" }
+  }
+]

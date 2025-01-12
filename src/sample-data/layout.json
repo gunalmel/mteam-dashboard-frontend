@@ -1,0 +1,343 @@
+{
+  "title": {
+    "text": "Clinical Review Timeline",
+    "y": 0.98
+  },
+  "margin": {
+    "t": 0,
+    "l": 50,
+    "r": 50,
+    "b": 50
+  },
+  "shapes": [
+    {
+      "x0": "2025-01-12 00:00:00",
+      "x1": "2025-01-12 00:01:55",
+      "fillcolor": "#1f77b433",
+      "name": "V Tach WITH Pulse",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:00:00",
+      "x1": "2025-01-12 00:01:55",
+      "fillcolor": "#1f77b433",
+      "name": "V Tach WITH Pulse",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:01:55",
+      "x1": "2025-01-12 00:04:36",
+      "fillcolor": "#d6272833",
+      "name": "V Tach NO Pulse.A",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:01:55",
+      "x1": "2025-01-12 00:04:36",
+      "fillcolor": "#d6272833",
+      "name": "V Tach NO Pulse.A",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:04:36",
+      "x1": "2025-01-12 00:05:51",
+      "fillcolor": "#2ca02c33",
+      "name": "V Tach NO Pulse.B",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:04:36",
+      "x1": "2025-01-12 00:05:51",
+      "fillcolor": "#2ca02c33",
+      "name": "V Tach NO Pulse.B",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:05:51",
+      "x1": "2025-01-12 00:06:10",
+      "fillcolor": "#8c564b33",
+      "name": "Asystole",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:05:51",
+      "x1": "2025-01-12 00:06:10",
+      "fillcolor": "#8c564b33",
+      "name": "Asystole",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:06:10",
+      "x1": "2025-01-12 00:08:15",
+      "fillcolor": "#9467bd33",
+      "name": "VF -V FIB",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:06:10",
+      "x1": "2025-01-12 00:08:15",
+      "fillcolor": "#9467bd33",
+      "name": "VF -V FIB",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:08:15",
+      "x1": "2025-01-12 00:10:56",
+      "fillcolor": "#ff7f0e33",
+      "name": "ROSC",
+      "y0": 0,
+      "y1": 12.5,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    },
+    {
+      "x0": "2025-01-12 00:08:15",
+      "x1": "2025-01-12 00:10:56",
+      "fillcolor": "#ff7f0e33",
+      "name": "ROSC",
+      "y0": -1,
+      "y1": -4,
+      "type": "rect",
+      "xref": "x",
+      "yref": "y",
+      "line": {
+        "width": 0
+      },
+      "layer": "below"
+    }
+  ],
+  "annotations": [
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:00:00",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "V Tach WITH Pulse",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#1f77b470",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#1f77b470",
+      "borderwidth": 1,
+      "borderpad": 3
+    },
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:01:55",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "V Tach NO Pulse.A",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#d6272870",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#d6272870",
+      "borderwidth": 1,
+      "borderpad": 3
+    },
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:04:36",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "V Tach NO Pulse.B",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#2ca02c70",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#2ca02c70",
+      "borderwidth": 1,
+      "borderpad": 3
+    },
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:05:51",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "Asystole",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#8c564b70",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#8c564b70",
+      "borderwidth": 1,
+      "borderpad": 3
+    },
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:06:10",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "VF -V FIB",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#9467bd70",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#9467bd70",
+      "borderwidth": 1,
+      "borderpad": 3
+    },
+    {
+      "xref": "x",
+      "yref": "paper",
+      "x": "2025-01-12 00:08:15",
+      "y": 0.9,
+      "xanchor": "left",
+      "yanchor": "middle",
+      "text": "ROSC",
+      "showarrow": false,
+      "font": {
+        "size": 16,
+        "color": "#ff7f0e70",
+        "family": "Arial, sans-serif",
+        "weight": 700
+      },
+      "bgcolor": "rgba(255, 255, 255, 0.8)",
+      "bordercolor": "#ff7f0e70",
+      "borderwidth": 1,
+      "borderpad": 3
+    }
+  ],
+  "xaxis": {
+    "range": [
+      "2025-01-12 00:00:00",
+      "2025-01-12 00:11:10"
+    ],
+    "title": "Time (seconds)",
+    "showgrid": false,
+    "tickformat": "%H:%M:%S"
+  },
+  "yaxis": {
+    "visible": false,
+    "range": [
+      -3,
+      13.5
+    ]
+  },
+  "autosize": true,
+  "modebar": {
+    "orientation": "v"
+  },
+
+  "showlegend": false,
+  "legend": {
+    "x": 1,
+    "xanchor": "right",
+    "y": 1
+  }
+}

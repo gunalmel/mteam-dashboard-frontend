@@ -1,0 +1,681 @@
+[
+  {
+    "x": [
+      "2025-01-12 00:00:35",
+      "2025-01-12 00:00:54",
+      "2025-01-12 00:01:31",
+      "2025-01-12 00:01:54",
+      "2025-01-12 00:02:28",
+      "2025-01-12 00:02:49",
+      "2025-01-12 00:02:58",
+      "2025-01-12 00:03:18",
+      "2025-01-12 00:03:23",
+      "2025-01-12 00:03:33",
+      "2025-01-12 00:03:40",
+      "2025-01-12 00:03:56",
+      "2025-01-12 00:04:16",
+      "2025-01-12 00:04:18",
+      "2025-01-12 00:04:18",
+      "2025-01-12 00:04:22",
+      "2025-01-12 00:04:35",
+      "2025-01-12 00:04:49",
+      "2025-01-12 00:05:25",
+      "2025-01-12 00:05:28",
+      "2025-01-12 00:05:33",
+      "2025-01-12 00:05:50",
+      "2025-01-12 00:06:05",
+      "2025-01-12 00:06:07",
+      "2025-01-12 00:06:36",
+      "2025-01-12 00:06:40",
+      "2025-01-12 00:06:50",
+      "2025-01-12 00:06:55",
+      "2025-01-12 00:07:14",
+      "2025-01-12 00:07:26",
+      "2025-01-12 00:07:51",
+      "2025-01-12 00:08:14",
+      "2025-01-12 00:08:44",
+      "2025-01-12 00:09:08",
+      "2025-01-12 00:10:05",
+      "2025-01-12 00:10:18",
+      "2025-01-12 00:10:22"
+    ],
+    "y": [
+      1,
+      1,
+      5,
+      1.5,
+      2.5,
+      2.5,
+      10,
+      8.5,
+      2.5,
+      2.5,
+      3,
+      2.5,
+      1,
+      8.5,
+      8.5,
+      1,
+      2,
+      3,
+      8.5,
+      1,
+      1,
+      2,
+      2.5,
+      3,
+      8.5,
+      2.5,
+      2.5,
+      3,
+      8.5,
+      6,
+      1,
+      2,
+      1,
+      5,
+      7.5,
+      1,
+      4
+    ],
+    "text": [
+      "",
+      "",
+      "",
+      "200J",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "200J",
+      "",
+      "",
+      "",
+      "",
+      "300J",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "300J",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "hovertext": [
+      "00:00:35, Pulse Check",
+      "00:00:54, Pulse Check",
+      "00:01:31, Order EKG, Good CPR saves lives! Don't interrupt CPR for an EKG., explanation",
+      "00:01:54, SYNCHRONIZED Shock 200J",
+      "00:02:28, Select Calcium",
+      "00:02:49, Select Epinephrine",
+      "00:02:58, Insert Bag Mask",
+      "00:03:18, Perform Bag Mask Pump",
+      "00:03:23, Select Calcium",
+      "00:03:33, Select Amiodarone",
+      "00:03:40, Insert Syringe on Right Hand, Patient is UNconscious = UNstable: Cardioversion is more important than medication",
+      "00:03:56, Select Epinephrine",
+      "00:04:16, Pulse Check",
+      "00:04:18, Perform Bag Mask Pump",
+      "00:04:18, Perform Bag Mask Pump",
+      "00:04:22, Pulse Check",
+      "00:04:35, Defib (UNsynchronized Shock) 200J",
+      "00:04:49, Insert Syringe on Right Hand",
+      "00:05:25, Perform Bag Mask Pump",
+      "00:05:28, Pulse Check",
+      "00:05:33, Pulse Check",
+      "00:05:50, Defib (UNsynchronized Shock) 300J",
+      "00:06:05, Select Epinephrine",
+      "00:06:07, Insert Syringe on Right Hand",
+      "00:06:36, Perform Bag Mask Pump",
+      "00:06:40, Select Calcium",
+      "00:06:50, Select Lidocaine",
+      "00:06:55, Insert Syringe on Right Hand",
+      "00:07:14, Perform Bag Mask Pump",
+      "00:07:26, Order Ultrasound",
+      "00:07:51, Pulse Check",
+      "00:08:14, Defib (UNsynchronized Shock) 300J",
+      "00:08:44, Pulse Check",
+      "00:09:08, Order EKG",
+      "00:10:05, Order Intubation, Patient should have been intubated EARLIER!",
+      "00:10:18, Pulse Check",
+      "00:10:22, Order Chest X-ray"
+    ],
+    "customdata": [
+      "Pulse Check",
+      "Pulse Check",
+      "Order EKG",
+      "SYNCHRONIZED Shock 200J",
+      "Select Calcium",
+      "Select Epinephrine",
+      "Insert Bag Mask",
+      "Perform Bag Mask Pump",
+      "Select Calcium",
+      "Select Amiodarone",
+      "Insert Syringe on Right Hand",
+      "Select Epinephrine",
+      "Pulse Check",
+      "Perform Bag Mask Pump",
+      "Perform Bag Mask Pump",
+      "Pulse Check",
+      "Defib (UNsynchronized Shock) 200J",
+      "Insert Syringe on Right Hand",
+      "Perform Bag Mask Pump",
+      "Pulse Check",
+      "Pulse Check",
+      "Defib (UNsynchronized Shock) 300J",
+      "Select Epinephrine",
+      "Insert Syringe on Right Hand",
+      "Perform Bag Mask Pump",
+      "Select Calcium",
+      "Select Lidocaine",
+      "Insert Syringe on Right Hand",
+      "Perform Bag Mask Pump",
+      "Order Ultrasound",
+      "Pulse Check",
+      "Defib (UNsynchronized Shock) 300J",
+      "Pulse Check",
+      "Order EKG",
+      "Order Intubation",
+      "Pulse Check",
+      "Order Chest X-ray"
+    ],
+    "marker": {
+      "size": 24,
+      "symbol": "square",
+      "color": [
+        "green",
+        "green",
+        "red",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "red",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "green",
+        "red",
+        "green",
+        "green"
+      ]
+    },
+    "mode": "text+markers",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "bottom center",
+    "textfont": {
+      "size": 10
+    }
+  },
+  {
+    "x": [
+      "2025-01-12 00:00:28",
+      "2025-01-12 00:00:57",
+      "2025-01-12 00:01:26",
+      "2025-01-12 00:00:38",
+      "2025-01-12 00:01:16",
+      "2025-01-12 00:02:35",
+      "2025-01-12 00:03:15",
+      "2025-01-12 00:03:55",
+      "2025-01-12 00:02:35",
+      "2025-01-12 00:03:15",
+      "2025-01-12 00:03:55",
+      "2025-01-12 00:04:54",
+      "2025-01-12 00:05:13",
+      "2025-01-12 00:05:32",
+      "2025-01-12 00:04:54",
+      "2025-01-12 00:05:13",
+      "2025-01-12 00:05:32",
+      "2025-01-12 00:05:55",
+      "2025-01-12 00:06:00",
+      "2025-01-12 00:06:05",
+      "2025-01-12 00:05:55",
+      "2025-01-12 00:06:00",
+      "2025-01-12 00:06:05",
+      "2025-01-12 00:06:51",
+      "2025-01-12 00:07:33",
+      "2025-01-12 00:07:12",
+      "2025-01-12 00:09:35",
+      "2025-01-12 00:09:35"
+    ],
+    "y": [
+      -1.5,
+      -1.5,
+      -1.5,
+      -2.5,
+      -2.5,
+      -1.5,
+      -1.5,
+      -1.5,
+      -2.5,
+      -2.5,
+      -2.5,
+      -1.5,
+      -1.5,
+      -1.5,
+      -2.5,
+      -2.5,
+      -2.5,
+      -1.5,
+      -1.5,
+      -1.5,
+      -2.5,
+      -2.5,
+      -2.5,
+      -1.5,
+      -1.5,
+      -2.5,
+      -1.5,
+      -2.5
+    ],
+    "text": [],
+    "hovertext": [
+      "labcheck_anytime",
+      "ultrasound_FAST_anytime",
+      "glucose_anytime",
+      "lunglisten_anytime",
+      "intubate_anytime",
+      "intubate_anytime",
+      "ultrasound_FAST_anytime",
+      "glucose_anytime",
+      "Epi - Give EPI every 3-p5 min. if shocks are not working",
+      "lunglisten_anytime",
+      "labcheck_anytime",
+      "lunglisten_anytime",
+      "glucose_anytime",
+      "intubate_anytime",
+      "ultrasound_FAST_anytime",
+      "labcheck_anytime",
+      "Amio_or_Lidocaine",
+      "lunglisten_anytime",
+      "glucose_anytime",
+      "intubate_anytime",
+      "labcheck_anytime",
+      "ultrasound_FAST_anytime",
+      "pulse_check",
+      "lunglisten_anytime",
+      "glucose_anytime",
+      "labcheck_anytime",
+      "ROSC_cool_patient - Unconscious post-arrest patients should be cooled to 33-36C",
+      "ROSC_Fentanyl_or_Propofol"
+    ],
+    "customdata": [],
+    "marker": {
+      "size": 24,
+      "symbol": "square",
+      "color": [
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)",
+        "rgba(249, 105, 14, 0.8)"
+      ]
+    },
+    "mode": "text+markers",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "bottom center",
+    "textfont": {
+      "size": 10
+    },
+    "hoverlabel": {
+      "bgcolor": "#003366",
+      "font": {
+        "color": "#FFFF99"
+      }
+    }
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:02:20",
+      "2025-01-12 00:02:20"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:02:20",
+      "00:02:20"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:02:21",
+      "2025-01-12 00:02:54"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:02:21",
+      "00:02:54"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:03:02",
+      "2025-01-12 00:03:23"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:03:02",
+      "00:03:23"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:03:25",
+      "2025-01-12 00:04:12"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:03:25",
+      "00:04:12"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:04:46",
+      "2025-01-12 00:05:01"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:04:46",
+      "00:05:01"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:05:04",
+      "2025-01-12 00:05:25"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:05:04",
+      "00:05:25"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:05:56",
+      "2025-01-12 00:06:05"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:05:56",
+      "00:06:05"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:06:07",
+      "2025-01-12 00:06:08"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:06:07",
+      "00:06:08"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:06:09",
+      "2025-01-12 00:07:25"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:06:09",
+      "00:07:25"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:07:25",
+      "2025-01-12 00:07:48"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:07:25",
+      "00:07:48"
+    ]
+  },
+  {
+    "text": "",
+    "mode": "lines",
+    "type": "scatter",
+    "hoverinfo": "text",
+    "textposition": "top center",
+    "textfont": {
+      "size": 16
+    },
+    "line": {
+      "color": "rgb(0, 150, 0)"
+    },
+    "x": [
+      "2025-01-12 00:08:19",
+      "2025-01-12 00:08:39"
+    ],
+    "y": [
+      0.5,
+      0.5
+    ],
+    "hovertext": [
+      "00:08:19",
+      "00:08:39"
+    ]
+  },
+  {
+    "type": "scatter",
+    "mode": "lines",
+    "x": [
+      "2025-01-12 00:00:00",
+      "2025-01-12 00:00:00"
+    ],
+    "y": [
+      0,
+      12.5
+    ],
+    "line": {
+      "color": "red",
+      "width": 2
+    }
+  }
+]

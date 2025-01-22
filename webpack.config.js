@@ -1,8 +1,13 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const config= {
   entry: './src/index.tsx',
   devtool: 'inline-source-map',
   output: {
@@ -16,9 +21,9 @@ module.exports = {
     },
     extensions: ['.ts', '.tsx', '.js'],
     fallback: {
-      buffer: require.resolve('buffer/'),
-      stream: require.resolve('stream-browserify'),
-      assert: require.resolve('assert/'),
+      buffer: ['buffer'],
+      stream: ['stream-browserify'],
+      assert: ['assert']
     },
   },
   module: {
@@ -67,3 +72,5 @@ module.exports = {
   },
   mode: 'development',
 };
+
+export default config;

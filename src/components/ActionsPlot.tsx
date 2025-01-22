@@ -2,6 +2,8 @@ import {FC, useEffect, useRef, useState} from 'react';
 import Plotly, {Layout, ScatterData} from 'plotly.js-basic-dist';
 import config from '../sample-data/config.json';
 import filterActions from '../filter-actions';
+import ToggleGrid from '@components/ToggleGrid';
+import PulseLoader from '@components/PulseLoader';
 
 type PlotComponentProps = {
   dataSource: string;
@@ -13,9 +15,10 @@ const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
   const [actionsLayout, setActionLayout] = useState<Partial<Layout>>({});
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [actionGroupIcons, setActionGroupIcons] = useState<ImageToggleItem[]>([]);
 
-  const toggleVisibility = () => {
-    setSelectedActions((prevFilter) => (prevFilter.includes('Pulse Check') ? ['Order EKG'] : ['Pulse Check']));
+  const handleSelect = (selectedItems: string[]) => {
+    setSelectedActions(selectedItems);
   };
 
   useEffect(() => {
@@ -25,10 +28,12 @@ const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
       try {
         const response = await fetch(url);
         const json = await response.json();
-        const {data, layout, actionGroups} = json;
+        const {data, layout, actionGroupIcons} = json;
+        const actionGroupIconMap:ImageToggleItem[] = Object.entries(actionGroupIcons as Record<string,string>).map(([group, icon]:[string,string]) => ({value: group, source: icon}));
+        setActionGroupIcons(actionGroupIconMap)
         setPlotData(data);
         setActionLayout(layout);
-        setSelectedActions(actionGroups);
+        setSelectedActions(Object.keys(actionGroupIcons));
       } catch (error) {
         setPlotData([]);
         setActionLayout({});
@@ -50,13 +55,12 @@ const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
     }
   }, [selectedActions, plotData, actionsLayout]);
 
-  return isLoading? <div>Loading...</div> : plotData.length===0 ? <div>No data found</div> : (
-      <>
-        <button onClick={toggleVisibility}>
-          Toggle Pulse Check Visibility
-        </button>
-        <div ref={graphDiv} style={{width: '100%', height: '100%'}}/>
-      </>
+  return plotData.length===0 ? <div className='p-8 text-center text-gray-600'>Complete simulation data is not available for the selected date. Please select a different date.</div> : (
+      <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
+        <PulseLoader isLoading={isLoading} text={'Fetching data for Clinical Review Timeline'}/>
+        <ToggleGrid items={actionGroupIcons} onChange={handleSelect}/>
+        <div ref={graphDiv} style={{width: '100%', height: '600px'}}></div>
+      </div>
   );
 };
 

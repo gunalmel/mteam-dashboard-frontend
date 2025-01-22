@@ -17,7 +17,8 @@ const config= {
   },
   resolve: {
     alias: {
-      '@components': path.resolve(__dirname, 'src/components'),
+      '@': path.resolve(__dirname, 'src/'),
+      '@components': path.resolve(__dirname, 'src/components')
     },
     extensions: ['.ts', '.tsx', '.js'],
     fallback: {
@@ -30,7 +31,8 @@ const config= {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, 'src'),
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.(ts|tsx)$/,

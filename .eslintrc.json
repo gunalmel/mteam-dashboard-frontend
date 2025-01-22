@@ -19,7 +19,9 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "react/react-in-jsx-scope": "off"
+    "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "react/react-in-jsx-scope": "off",
+    "jsx-quotes": [2, "prefer-single"]
   }
 }
 

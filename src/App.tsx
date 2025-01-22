@@ -1,12 +1,11 @@
 import React from 'react';
-import Graph from './components/Graph';
 import './styles.css';
+import Dashboard from '@components/Dashboard';
 
 const App: React.FC = () => {
     return (
         <div>
-            <h1>React Plotly Integration</h1>
-            <Graph/>
+            <Dashboard/>
         </div>
     );
 };

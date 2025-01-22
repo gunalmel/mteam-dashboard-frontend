@@ -1,6 +1,6 @@
-import {Layout, ScatterData} from "plotly.js-basic-dist";
+import {Layout, ScatterData} from 'plotly.js-basic-dist';
 
-function hide(index: number, series: Partial<ScatterData>, actionsLayout: Partial<Layout>) {
+function show(index: number, series: Partial<ScatterData>, actionsLayout: Partial<Layout>) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     series.hoverinfo[index] = 'text';
@@ -15,7 +15,7 @@ function hide(index: number, series: Partial<ScatterData>, actionsLayout: Partia
     actionsLayout.images[index].opacity = 1;
 }
 
-function show(index: number, series: Partial<ScatterData>, actionsLayout: Partial<Layout>) {
+function hide(index: number, series: Partial<ScatterData>, actionsLayout: Partial<Layout>) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     series.hoverinfo[index] = 'none';
@@ -43,12 +43,12 @@ export default function filterActions(selectedActions: string[], plotData: Parti
             series.marker.opacity = series.marker.opacity || [];
 
             series.customdata.forEach((value, index) => {
-                const shouldModify = selectedActions.includes(value as string);
+                const shoudlDisplay = selectedActions.includes(value as string);
 
-                if (shouldModify) {
-                    hide(index, series, actionsLayout);
-                } else {
+                if (shoudlDisplay) {
                     show(index, series, actionsLayout);
+                } else {
+                    hide(index, series, actionsLayout);
                 }
             });
         }

@@ -1,20 +1,25 @@
-import React, {useEffect, useRef, useState} from "react";
+import {FC, useEffect, useRef, useState} from 'react';
 import Plotly, {Layout, ScatterData} from 'plotly.js-basic-dist';
 import config from '../sample-data/config.json';
-import filterActions from "../filter-actions";
+import filterActions from '../filter-actions';
 
-const Graph: React.FC = () => {
+type PlotComponentProps = {
+  dataSource: string;
+};
+
+const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
   const graphDiv = useRef<HTMLDivElement>(null);
   const [plotData, setPlotData] = useState<Partial<ScatterData>[]>([]);
-  const [actionsLayout, setActionLayout] = useState<Partial<Layout>>([] as Partial<Layout>);
+  const [actionsLayout, setActionLayout] = useState<Partial<Layout>>({});
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const toggleVisibility = () => {
     setSelectedActions((prevFilter) => (prevFilter.includes('Pulse Check') ? ['Order EKG'] : ['Pulse Check']));
   };
 
   useEffect(() => {
-    const url = "/api/actions/plotly/1Ae95pvrZsV32qBCSnCw_xkOKEw9BrI17";
+    const url = `/api/actions/plotly/${dataSource}`;
 
     const fetchData = async () => {
       try {
@@ -25,12 +30,17 @@ const Graph: React.FC = () => {
         setActionLayout(layout);
         setSelectedActions(actionGroups);
       } catch (error) {
-        console.log("error", error);
+        setPlotData([]);
+        setActionLayout({});
+        console.log('error', error);
       }
+      setLoading(false);
     };
-
-    fetchData().catch(console.error);
-  }, []);
+    setLoading(true);
+    if(dataSource) {
+      fetchData().catch(console.error);
+    }
+  }, [dataSource]);
 
   useEffect(() => {
     if (graphDiv.current && plotData && plotData.length>0) {
@@ -40,15 +50,15 @@ const Graph: React.FC = () => {
     }
   }, [selectedActions, plotData, actionsLayout]);
 
-  return (
+  return isLoading? <div>Loading...</div> : plotData.length===0 ? <div>No data found</div> : (
       <>
         <button onClick={toggleVisibility}>
           Toggle Pulse Check Visibility
         </button>
-        <div ref={graphDiv} style={{width: "100%", height: "100%"}}/>
+        <div ref={graphDiv} style={{width: '100%', height: '100%'}}/>
       </>
   );
 };
 
-export default Graph;
+export default ActionsPlot;
 

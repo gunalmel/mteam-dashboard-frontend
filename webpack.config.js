@@ -11,6 +11,9 @@ module.exports = {
     clean: true,
   },
   resolve: {
+    alias: {
+      '@components': path.resolve(__dirname, 'src/components'),
+    },
     extensions: ['.ts', '.tsx', '.js'],
     fallback: {
       buffer: require.resolve('buffer/'),

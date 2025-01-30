@@ -1,3 +1,13 @@
+interface PlotlyPlotProps {
+    isLoading: boolean;
+    isDataAvailable: () => boolean;
+    noDataMessage: string;
+    width?: string;
+    height?: string;
+    loaderText?: string;
+    className?: string;
+}
+
 interface ImageToggleItem {
     source: string;
     value: string;

@@ -59,7 +59,7 @@ const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
       <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
         <PulseLoader isLoading={isLoading} text={'Fetching data for Clinical Review Timeline'}/>
         <ToggleGrid items={actionGroupIcons} onChange={handleSelect}/>
-        <div ref={graphDiv} style={{width: '100%', height: '600px'}}></div>
+        <div ref={graphDiv} style={{width: '100%', height: '500px'}}></div>
       </div>
   );
 };

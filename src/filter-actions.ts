@@ -43,9 +43,9 @@ export default function filterActions(selectedActions: string[], plotData: Parti
             series.marker.opacity = series.marker.opacity || [];
 
             series.customdata.forEach((value, index) => {
-                const shoudlDisplay = selectedActions.includes(value as string);
+                const shouldDisplay = selectedActions.includes(value as string);
 
-                if (shoudlDisplay) {
+                if (shouldDisplay) {
                     show(index, series, actionsLayout);
                 } else {
                     hide(index, series, actionsLayout);
@@ -53,5 +53,5 @@ export default function filterActions(selectedActions: string[], plotData: Parti
             });
         }
     });
-    return {plotData:{...plotData}, actionsLayout: {...actionsLayout}};
+    return {plotData:[...plotData], actionsLayout: {...actionsLayout}};
 }

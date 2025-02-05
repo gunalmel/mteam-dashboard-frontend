@@ -1,64 +1,35 @@
-import {FC, useEffect, useRef, useState} from 'react';
-import Plotly, {Layout, ScatterData} from 'plotly.js-basic-dist';
+import {FC, useEffect, useRef} from 'react';
+import Plotly from 'plotly.js-basic-dist';
 import config from '../sample-data/config.json';
 import filterActions from '../filter-actions';
 import ToggleGrid from '@components/ToggleGrid';
 import PulseLoader from '@components/PulseLoader';
+import {useDataContext} from '@/contexts/DataSourceContext';
 
 type PlotComponentProps = {
   dataSource: string;
 };
 
-const ActionsPlot: FC<PlotComponentProps> = ({ dataSource }) => {
+const ActionsPlot: FC<PlotComponentProps> = () => {
   const graphDiv = useRef<HTMLDivElement>(null);
-  const [plotData, setPlotData] = useState<Partial<ScatterData>[]>([]);
-  const [actionsLayout, setActionLayout] = useState<Partial<Layout>>({});
-  const [selectedActions, setSelectedActions] = useState<string[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [actionGroupIcons, setActionGroupIcons] = useState<ImageToggleItem[]>([]);
+  const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = useDataContext().actionsPlot;
 
   const handleSelect = (selectedItems: string[]) => {
     setSelectedActions(selectedItems);
   };
 
   useEffect(() => {
-    const url = `/api/actions/plotly/${dataSource}`;
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-        const {data, layout, actionGroupIcons} = json;
-        const actionGroupIconMap:ImageToggleItem[] = Object.entries(actionGroupIcons as Record<string,string>).map(([group, icon]:[string,string]) => ({value: group, source: icon}));
-        setActionGroupIcons(actionGroupIconMap)
-        setPlotData(data);
-        setActionLayout(layout);
-        setSelectedActions(Object.keys(actionGroupIcons));
-      } catch (error) {
-        setPlotData([]);
-        setActionLayout({});
-        console.log('error', error);
-      }
-      setLoading(false);
-    };
-    setLoading(true);
-    if(dataSource) {
-      fetchData().catch(console.error);
-    }
-  }, [dataSource]);
-
-  useEffect(() => {
-    if (graphDiv.current && plotData && plotData.length>0) {
-      filterActions(selectedActions, plotData, actionsLayout);
+    if (graphDiv.current && data && data.length>0) {
+      const {plotData, actionsLayout} = filterActions(selectedActions, data, layout);
       // Apply filtering without re-rendering the entire chart
       Plotly.react(graphDiv.current, plotData, actionsLayout, config).catch(console.error);
     }
-  }, [selectedActions, plotData, actionsLayout]);
+  }, [selectedActions, data, layout]);
 
-  return plotData.length===0 ? <div className='p-8 text-center text-gray-600'>Complete simulation data is not available for the selected date. Please select a different date.</div> : (
+  return data.length===0 ? <div className='p-8 text-center text-gray-600'>Complete simulation data is not available for the selected date. Please select a different date.</div> : (
       <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
-        <PulseLoader isLoading={isLoading} text={'Fetching data for Clinical Review Timeline'}/>
-        <ToggleGrid items={actionGroupIcons} onChange={handleSelect}/>
+        <PulseLoader isLoading={isActionsLoading} text={'Fetching data for Clinical Review Timeline'}/>
+        <ToggleGrid items={groupIcons} onChange={handleSelect}/>
         <div ref={graphDiv} style={{width: '100%', height: '500px'}}></div>
       </div>
   );

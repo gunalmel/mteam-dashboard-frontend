@@ -1,8 +1,8 @@
-import {useDataSource} from '@/contexts/DataSourceContext';
+import {useDataContext} from '@/contexts/DataSourceContext';
 import {ChangeEvent, FC} from 'react';
 
 const DropdownSelector: FC = () => {
-    const {dataSources, selectedSource, setSelectedSource} = useDataSource();
+    const {dataSources, selectedSource, setSelectedSource} = useDataContext();
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setSelectedSource(event.target.value);

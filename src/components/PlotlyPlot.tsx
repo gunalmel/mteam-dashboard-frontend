@@ -9,7 +9,7 @@ const PlotlyPlot = forwardRef<HTMLDivElement, PlotlyPlotProps>(
                 <div className={`p-8 text-center text-gray-600 ${className}`}>{noDataMessage}</div>
             ) : (
 
-                <div ref={ref as RefObject<HTMLDivElement>} style={{width, height}}></div>
+                <div ref={ref as RefObject<HTMLDivElement>} style={{height:`${height}`,width:`${width}`}}></div>
             )}
             </div>
     }

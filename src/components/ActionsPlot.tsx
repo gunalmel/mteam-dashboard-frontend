@@ -1,28 +1,25 @@
-import {FC, useEffect, useRef} from 'react';
-import Plotly from 'plotly.js-basic-dist';
-import config from '../sample-data/config.json';
+import {FC, useEffect, useState} from 'react';
+import {Layout, ScatterData} from 'plotly.js-basic-dist';
 import filterActions from '../filter-actions';
 import ToggleGrid from '@components/ToggleGrid';
 import PulseLoader from '@components/PulseLoader';
 import {useDataContext} from '@/contexts/DataSourceContext';
+import Plot from '@components/Plot';
 
-type PlotComponentProps = {
-  dataSource: string;
-};
-
-const ActionsPlot: FC<PlotComponentProps> = () => {
-  const graphDiv = useRef<HTMLDivElement>(null);
+const ActionsPlot: FC = () => {
   const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = useDataContext().actionsPlot;
+  const [plotData, setPlotData] = useState<Partial<ScatterData>[]>(data);
+  const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layout);
 
   const handleSelect = (selectedItems: string[]) => {
     setSelectedActions(selectedItems);
   };
 
   useEffect(() => {
-    if (graphDiv.current && data && data.length>0) {
-      const {plotData, actionsLayout} = filterActions(selectedActions, data, layout);
-      // Apply filtering without re-rendering the entire chart
-      Plotly.react(graphDiv.current, plotData, actionsLayout, config).catch(console.error);
+    if (data && data.length>0) {
+      const {plotData:filteredData, actionsLayout:filteredLayout} = filterActions(selectedActions, data, layout);
+      setPlotData(filteredData);
+      setPlotLayout(filteredLayout);
     }
   }, [selectedActions, data, layout]);
 
@@ -30,7 +27,7 @@ const ActionsPlot: FC<PlotComponentProps> = () => {
       <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
         <PulseLoader isLoading={isActionsLoading} text={'Fetching data for Clinical Review Timeline'}/>
         <ToggleGrid items={groupIcons} onChange={handleSelect}/>
-        <div ref={graphDiv} style={{width: '100%', height: '500px'}}></div>
+        <Plot data={plotData} layout={plotLayout} width='100%' height='500px' />
       </div>
   );
 };

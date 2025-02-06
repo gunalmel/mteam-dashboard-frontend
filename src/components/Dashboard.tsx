@@ -1,8 +1,8 @@
 import { DataSourceProvider, useDataContext } from '@/contexts/DataSourceContext';
 import DropdownSelector from './DataSourceSelector';
-import ActionsPlot from './ActionsPlot';
 import {FC} from 'react';
 import CognitiveLoadPlot from '@components/CognitiveLoadPlot';
+import ActionsPlot from '@components/ActionsPlot';
 
 const DashboardContent: FC = () => {
     const { selectedSource } = useDataContext();
@@ -10,7 +10,7 @@ const DashboardContent: FC = () => {
     return (
         <div className='flex flex-col justify-evenly'>
             <DropdownSelector/>
-            <ActionsPlot dataSource={selectedSource}/>
+            <ActionsPlot/>
             <CognitiveLoadPlot dataSource={selectedSource}/>
         </div>
     );

@@ -1,42 +1,90 @@
-import React, {useEffect, useRef, useState} from 'react';
-import Plotly, {Data, Layout} from 'plotly.js-basic-dist';
-import config from '@/sample-data/config.json';
-import PlotlyPlot from '@components/PlotlyPlot';
+import React, {useEffect, useState} from 'react';
+import {Data, Layout} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
+import PulseLoader from '@components/PulseLoader';
+import Plot from '@components/Plot';
 
-const url = `/api/cognitive-load/plotly/1UcGMtx0K_eS7SEDUlo9W44jgb7BwPs0m`;
-const averageUrl = `/api/cognitive-load/plotly/1a0Fs8wKjKD7ZoMumqbigYkb2L0m59Uj_`;
+async function fetchPlotData(dataSource: string, selectedDataSet: string) {
+    const data = await fetchAndCacheDataSources(dataSource);
+    if(!data){
+        return [];
+    }
+    const averageFileId = data['Average'];
+    const selectedFileId = data[selectedDataSet];
+        const averageDataCacheKey = `cognitiveLoad::${averageFileId}::average`;
+        const averageDataAsString = sessionStorage.getItem(averageDataCacheKey);
+        if(averageDataAsString){
+            const averageData = JSON.parse(averageDataAsString);
+            averageData['line'] = { color: 'red' };
+            averageData['name'] = 'Average';
+
+            const selectedDataResponse = await fetch(getPlotDataUrl(selectedFileId));
+            const selectedData = await selectedDataResponse.json();
+            selectedData['line'] = { color: 'red' };
+            selectedData['name'] = selectedDataSet;
+            return[averageData, selectedData];
+        } else {
+            const [averageResponse, selectedResponse] = await Promise.all([
+                fetch(getPlotDataUrl(averageFileId)),
+                fetch(getPlotDataUrl(selectedFileId))
+            ]);
+
+            const [averageData, selectedData] = await Promise.all([averageResponse.json(), selectedResponse.json()]);
+
+            averageData['line'] = {color: 'blue'};
+            averageData['name'] = selectedDataSet;
+
+            selectedData['line'] = {color: 'red'};
+            selectedData['name'] = 'Average';
+
+            return[averageData, selectedData];
+        }
+}
+
+function getCognitiveLoadDataSourcesUrl(dataSourceId: string){
+    return `/api/data-sources/${dataSourceId}/cognitive-load`;
+}
+
+function getPlotDataUrl(fileId: string){
+    return `/api/cognitive-load/plotly/${fileId}`;
+}
+
+async function fetchAndCacheDataSources(dataSourceId: string) {
+    const cacheKey = `cognitiveLoad::${dataSourceId}`;
+    const data = sessionStorage.getItem(cacheKey);
+    if (data) {
+        return JSON.parse(data);
+    }
+
+    const response = await fetch(getCognitiveLoadDataSourcesUrl(dataSourceId));
+    if(response?.status!=200){
+        return undefined;
+    }
+    const dataSources = await response.json();
+    sessionStorage.setItem(cacheKey, JSON.stringify(dataSources));
+    return dataSources;
+}
 
 export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [plotData, setPlotData] = useState<Data[]>([]);
-    const plotRef = useRef<HTMLDivElement>(null);
     const {layout: actionsLayout} = useDataContext().actionsPlot;
+    const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
+    const [selectedDataSet, setSelectedDataSet] = useState<string>('Team Lead');
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
-                const [response1, response2] = await Promise.all([
-                    fetch(url),
-                    fetch(averageUrl),
-                ]);
-
-                const [json1, json2] = await Promise.all([response1.json(), response2.json()]);
-
-                json1['line'] = { color: 'blue' };
-                json1['name'] = 'Team Lead';
-
-                json2['line'] = { color: 'red' };
-                json2['name'] = 'Average';
-
-                setPlotData([json1, json2]);
+                const data = await fetchPlotData(dataSource, selectedDataSet);
+                setPlotData(data);
             } catch (error) {
                 setPlotData([]);
                 console.log('error', error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
-        };
-        setLoading(true);
+        }
         if(dataSource) {
             fetchData().catch(console.error);
         }
@@ -45,19 +93,17 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
     useEffect(() => {
         const filteredShapes = actionsLayout.shapes?.filter(shape=>shape.y1 as number>0);
         const cognitivePlotLayout  = {...layoutTemplate, shapes: filteredShapes, xaxis: actionsLayout.xaxis};
-        if (plotRef.current && plotData && plotData.length>0) {
-            Plotly.react(plotRef.current, plotData, cognitivePlotLayout, config).catch(console.error);
-        }
+        setPlotLayout(cognitivePlotLayout);
     }, [plotData, actionsLayout]);
 
-    return <PlotlyPlot ref={plotRef}
-                       className='mt-6'
-                       width='100%'
-                       height='300px'
-                       isLoading={isLoading}
-                       isDataAvailable={() => plotData.length > 0}
-                       noDataMessage='No data found for Cognitive Load Plot'
-                       loaderText='Loading Cognitive Load Plot Data...'/>;
+    return     <div className={`flex flex-col items-center mt-6`} style={{ position: 'relative' }}>
+        <PulseLoader isLoading={isLoading} text='Loading Cognitive Load Plot Data...' />
+        {plotData.length === 0 ? (
+            <div className={`p-8 text-center text-gray-600 mt-6`}>No data found for Cognitive Load Plot</div>
+        ) : (
+            <Plot data={plotData} layout={plotLayout} width='100%' height='300px' />
+        )}
+    </div>;
 }
 
 const layoutTemplate: Partial<Layout> = {

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Data, Layout} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
-import PulseLoader from '@components/PulseLoader';
 import Plot from '@components/Plot';
+import {PlotContainer} from '@components/PlotContainer';
 
 async function fetchPlotData(dataSource: string, selectedDataSet: string) {
     const data = await fetchAndCacheDataSources(dataSource);
@@ -74,17 +74,16 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             try {
                 const data = await fetchPlotData(dataSource, selectedDataSet);
                 setPlotData(data);
             } catch (error) {
                 setPlotData([]);
                 console.log('error', error);
-            } finally {
-                setLoading(false);
             }
+                setLoading(false);
         }
+        setLoading(true);
         if(dataSource) {
             fetchData().catch(console.error);
         }
@@ -96,14 +95,23 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
         setPlotLayout(cognitivePlotLayout);
     }, [plotData, actionsLayout]);
 
-    return     <div className={`flex flex-col items-center mt-6`} style={{ position: 'relative' }}>
-        <PulseLoader isLoading={isLoading} text='Loading Cognitive Load Plot Data...' />
-        {plotData.length === 0 ? (
-            <div className={`p-8 text-center text-gray-600 mt-6`}>No data found for Cognitive Load Plot</div>
-        ) : (
-            <Plot data={plotData} layout={plotLayout} width='100%' height='300px' />
-        )}
-    </div>;
+    return <PlotContainer isLoading={isLoading}
+                          dataLoadingMessage='Loading Cognitive Load Plot Data...'
+                          noDataFoundMessage='No data found for Cognitive Load Plot'
+                          noDataFoundFn={() => plotData.length === 0}>
+        <Plot data={plotData} layout={plotLayout} width='100%' height='300px'/>
+    </PlotContainer>;
+
+
+
+    // <div className={`flex flex-col items-center mt-6`} style={{ position: 'relative' }}>
+    //     <PulseLoader isLoading={isLoading} text='Loading Cognitive Load Plot Data...' />
+    //     {plotData.length === 0 ? (
+    //         <div className={`p-8 text-center text-gray-600 mt-6`}>No data found for Cognitive Load Plot</div>
+    //     ) : (
+    //         <Plot data={plotData} layout={plotLayout} width='100%' height='300px' />
+    //     )}
+    // </div>;
 }
 
 const layoutTemplate: Partial<Layout> = {

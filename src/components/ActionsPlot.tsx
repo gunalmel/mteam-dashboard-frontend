@@ -1,10 +1,10 @@
-import {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Layout, ScatterData} from 'plotly.js-basic-dist';
 import filterActions from '../filter-actions';
 import ToggleGrid from '@components/ToggleGrid';
-import PulseLoader from '@components/PulseLoader';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
+import {PlotContainer} from '@components/PlotContainer';
 
 const ActionsPlot: FC = () => {
   const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = useDataContext().actionsPlot;
@@ -23,13 +23,13 @@ const ActionsPlot: FC = () => {
     }
   }, [selectedActions, data, layout]);
 
-  return data.length===0 ? <div className='p-8 text-center text-gray-600'>Complete simulation data is not available for the selected date. Please select a different date.</div> : (
-      <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
-        <PulseLoader isLoading={isActionsLoading} text={'Fetching data for Clinical Review Timeline'}/>
-        <ToggleGrid items={groupIcons} onChange={handleSelect}/>
-        <Plot data={plotData} layout={plotLayout} width='100%' height='500px' />
-      </div>
-  );
+  return <PlotContainer isLoading={isActionsLoading}
+                        dataLoadingMessage='Fetching data for Clinical Review Timeline...'
+                        noDataFoundMessage='Complete simulation data is not available for the selected date. Please select a different date.'
+                        noDataFoundFn={() => plotData.length === 0}>
+      <ToggleGrid items={groupIcons} onChange={handleSelect}/>
+      <Plot data={plotData} layout={plotLayout} width='100%' height='500px'/>
+  </PlotContainer>;
 };
 
 export default ActionsPlot;

@@ -1,5 +1,6 @@
 import {FC} from 'react';
 import clsx from 'clsx';
+import {ImageToggleProps} from '@/types';
 
 const ImageToggle: FC<ImageToggleProps> = ({source, value, checked, onToggle}) => {
     const onChange = () => {

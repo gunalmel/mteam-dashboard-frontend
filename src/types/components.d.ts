@@ -1,12 +1,4 @@
-interface PlotlyPlotProps {
-    isLoading: boolean;
-    isDataAvailable: () => boolean;
-    noDataMessage: string;
-    width?: string;
-    height?: string;
-    loaderText?: string;
-    className?: string;
-}
+import {ButtonHTMLAttributes} from 'react';
 
 interface ImageToggleItem {
     source: string;
@@ -21,4 +13,18 @@ interface ImageToggleProps extends ImageToggleItem {
 interface ToggleGridProps {
     items: ImageToggleItem[];
     onChange: (selectedItems: string[]) => void;
+}
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    value: string;
+    label: string;
+    position: 'first' | 'middle' | 'last';
+    selected: boolean;
+}
+
+interface SelectorButtonGroupProps {
+    selections: [string, string][];
+    selectedValue: string;
+    onSelect: (selectedValue: string) => void;
+    className?: string;
 }

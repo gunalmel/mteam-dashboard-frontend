@@ -1,5 +1,6 @@
 import {ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useMemo, useState} from 'react';
 import ImageToggle from '@components/ImageToggle';
+import {ToggleGridProps} from '@/types';
 
 const toggleHandlerBuilder = (setSelectedItems:Dispatch<SetStateAction<string[]>>) => (selectedItems:string[]) => (selectedItem:string, selected:boolean) => {
     const newSelectedItems = selected ? [...selectedItems, selectedItem] : selectedItems.filter((item) => item !== selectedItem);

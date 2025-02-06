@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Layout, ScatterData} from 'plotly.js-basic-dist';
+import {ImageToggleItem} from '@/types';
 
 export const useActionsData = (dataSource: string) => {
     const [data, setData] = useState<Partial<ScatterData>[]>([]);

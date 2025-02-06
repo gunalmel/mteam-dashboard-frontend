@@ -3,14 +3,16 @@ import {Data, Layout} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
+import SelectorButtonGroup from '@components/SelectorButtonGroup';
+import {SelectorButtonGroupProps} from '@/types';
 
 async function fetchPlotData(dataSource: string, selectedDataSet: string) {
-    const data = await fetchAndCacheDataSources(dataSource);
-    if(!data){
+    const dataSets = await fetchAndCacheDataSources(dataSource);
+    if(!dataSets){
         return [];
     }
-    const averageFileId = data['Average'];
-    const selectedFileId = data[selectedDataSet];
+    const averageFileId = dataSets['Average'];
+    const selectedFileId = dataSets[selectedDataSet];
         const averageDataCacheKey = `cognitiveLoad::${averageFileId}::average`;
         const averageDataAsString = sessionStorage.getItem(averageDataCacheKey);
         if(averageDataAsString){
@@ -20,9 +22,9 @@ async function fetchPlotData(dataSource: string, selectedDataSet: string) {
 
             const selectedDataResponse = await fetch(getPlotDataUrl(selectedFileId));
             const selectedData = await selectedDataResponse.json();
-            selectedData['line'] = { color: 'red' };
+            selectedData['line'] = { color: 'blue' };
             selectedData['name'] = selectedDataSet;
-            return[averageData, selectedData];
+            return [dataSets, averageData, selectedData];
         } else {
             const [averageResponse, selectedResponse] = await Promise.all([
                 fetch(getPlotDataUrl(averageFileId)),
@@ -30,14 +32,15 @@ async function fetchPlotData(dataSource: string, selectedDataSet: string) {
             ]);
 
             const [averageData, selectedData] = await Promise.all([averageResponse.json(), selectedResponse.json()]);
+            sessionStorage.setItem(averageDataCacheKey, JSON.stringify(averageData));
 
-            averageData['line'] = {color: 'blue'};
-            averageData['name'] = selectedDataSet;
+            averageData['line'] = {color: 'red'};
+            averageData['name'] = 'Average';
 
-            selectedData['line'] = {color: 'red'};
-            selectedData['name'] = 'Average';
+            selectedData['line'] = {color: 'blue'};
+            selectedData['name'] = selectedDataSet;
 
-            return[averageData, selectedData];
+            return [dataSets, averageData, selectedData];
         }
 }
 
@@ -67,6 +70,7 @@ async function fetchAndCacheDataSources(dataSourceId: string) {
 
 export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }) {
     const [isLoading, setLoading] = useState<boolean>(false);
+    const [dataSets, setDataSets] = useState<SelectorButtonGroupProps['selections']>([]);
     const [plotData, setPlotData] = useState<Data[]>([]);
     const {layout: actionsLayout} = useDataContext().actionsPlot;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
@@ -75,8 +79,9 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchPlotData(dataSource, selectedDataSet);
-                setPlotData(data);
+                const [dataSets, averageData, selectedData] = await fetchPlotData(dataSource, selectedDataSet);
+                setPlotData([averageData, selectedData]);
+                setDataSets(Object.keys(dataSets).filter(set=>set!=='Average').map(set=>[set, set]));
             } catch (error) {
                 setPlotData([]);
                 console.log('error', error);
@@ -87,7 +92,7 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
         if(dataSource) {
             fetchData().catch(console.error);
         }
-    }, [dataSource]);
+    }, [dataSource, selectedDataSet]);
 
     useEffect(() => {
         const filteredShapes = actionsLayout.shapes?.filter(shape=>shape.y1 as number>0);
@@ -99,19 +104,15 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
                           dataLoadingMessage='Loading Cognitive Load Plot Data...'
                           noDataFoundMessage='No data found for Cognitive Load Plot'
                           noDataFoundFn={() => plotData.length === 0}>
+        <SelectorButtonGroup className='mt-6 mb-4'
+            selections={dataSets}
+            selectedValue={selectedDataSet}
+            onSelect={(selected) => {
+                setSelectedDataSet(selected);
+            }}
+        />
         <Plot data={plotData} layout={plotLayout} width='100%' height='300px'/>
     </PlotContainer>;
-
-
-
-    // <div className={`flex flex-col items-center mt-6`} style={{ position: 'relative' }}>
-    //     <PulseLoader isLoading={isLoading} text='Loading Cognitive Load Plot Data...' />
-    //     {plotData.length === 0 ? (
-    //         <div className={`p-8 text-center text-gray-600 mt-6`}>No data found for Cognitive Load Plot</div>
-    //     ) : (
-    //         <Plot data={plotData} layout={plotLayout} width='100%' height='300px' />
-    //     )}
-    // </div>;
 }
 
 const layoutTemplate: Partial<Layout> = {

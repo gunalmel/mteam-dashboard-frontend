@@ -37,11 +37,19 @@ export default function VisualAttentionPlot({selectionFileId}:{ selectionFileId?
             setLoading(true);
             fetchData(selectionFileId).catch(console.error);
         }
+        else {
+            setPlotData([]);
+        }
     }, [selectionFileId]);
 
     useEffect(() => {
-        const cognitivePlotLayout  = {...layoutTemplate, xaxis: actionsLayout.xaxis};
-        setPlotLayout(cognitivePlotLayout);
+        if(selectionFileId && (plotData && plotData.length>0) && actionsLayout){
+            const cognitivePlotLayout = {...layoutTemplate, xaxis: actionsLayout.xaxis};
+            setPlotLayout(cognitivePlotLayout);
+        }
+        else {
+            setPlotLayout({});
+        }
     }, [plotData, actionsLayout]);
 
     return <PlotContainer isLoading={isLoading}

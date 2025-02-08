@@ -61,6 +61,12 @@ export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesCo
                 setSelectedCognitiveLoadFiles([['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]);
                 setSelectedVisualAttentionFile(visualAttentionFilesMap[defaultSelection[0]]);
             }
+            else {
+                setCognitiveLoadFiles({});
+                setVisualAttentionFiles({});
+                setSelectedCognitiveLoadFiles([['', ''], ['', '']]);
+                setSelectedVisualAttentionFile('');
+            }
         }
         if (selectedDataFilesContainerId) {
             fetchCognitiveLoadVisualAttentionFiles().catch(console.error);

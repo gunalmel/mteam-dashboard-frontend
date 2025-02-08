@@ -43,6 +43,10 @@ function getPlotDataUrl(fileId: string){
     return `/api/cognitive-load/plotly/${fileId}`;
 }
 
+function receivedSelections(selections: [[string, string], [string, string]]) {
+    return selections.every(([first, second]) => first && second);
+}
+
 export default function CognitiveLoadPlot({selections}:{ selections: [[string, string], [string, string]] }) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [plotData, setPlotData] = useState<Data[]>([]);
@@ -61,16 +65,23 @@ export default function CognitiveLoadPlot({selections}:{ selections: [[string, s
                 setLoading(false);
             }
         }
-        if(selections.length>1 && selections[0].length>0 && selections[1].length>0 && selections[0][1] && selections[1][1]){
+        if(receivedSelections(selections)){
             setLoading(true);
             fetchData(selections).catch(console.error);
+        }
+        else {
+            setPlotData([]);
         }
     }, [selections]);
 
     useEffect(() => {
-        const filteredShapes = actionsLayout.shapes?.filter(shape=>shape.y1 as number>0);
-        const cognitivePlotLayout  = {...layoutTemplate, shapes: filteredShapes, xaxis: actionsLayout.xaxis};
-        setPlotLayout(cognitivePlotLayout);
+        if(receivedSelections(selections) && (plotData && plotData.length>0)){
+            const filteredShapes = actionsLayout.shapes?.filter(shape => shape.y1 as number > 0);
+            const cognitivePlotLayout = {...layoutTemplate, shapes: filteredShapes, xaxis: actionsLayout.xaxis};
+            setPlotLayout(cognitivePlotLayout);
+        }else{
+            setPlotLayout({});
+        }
     }, [plotData, actionsLayout]);
 
     return <PlotContainer isLoading={isLoading}

@@ -1,5 +1,5 @@
 import { DataSourceProvider, useDataContext } from '@/contexts/DataSourceContext';
-import DropdownSelector from './DataSourceSelector';
+import DataSourceSelector from './DataSourceSelector';
 import React, {FC} from 'react';
 import CognitiveLoadPlot from '@components/CognitiveLoadPlot';
 import ActionsPlot from '@components/ActionsPlot';
@@ -13,7 +13,7 @@ const DashboardContent: FC = () => {
 
     return (
         <div className='flex flex-col justify-evenly'>
-            <DropdownSelector/>
+            <DataSourceSelector/>
             <ActionsPlot/>
             <div className='flex flex-col items-center p-2'>
                 <SelectorButtonGroup selections={cognitiveLoadFiles}

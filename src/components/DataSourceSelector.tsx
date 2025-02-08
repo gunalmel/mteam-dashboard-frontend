@@ -1,7 +1,7 @@
 import {useDataContext} from '@/contexts/DataSourceContext';
 import {ChangeEvent, FC} from 'react';
 
-const DropdownSelector: FC = () => {
+const DataSourceSelector: FC = () => {
     const {dataFilesContainers, selectedDataFilesContainerId, setSelectedDataFilesContainerId} = useDataContext();
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -24,4 +24,4 @@ const DropdownSelector: FC = () => {
     );
 };
 
-export default DropdownSelector;
+export default DataSourceSelector;

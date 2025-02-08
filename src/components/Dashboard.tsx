@@ -15,9 +15,8 @@ const DashboardContent: FC = () => {
         <div className='flex flex-col justify-evenly'>
             <DropdownSelector/>
             <ActionsPlot/>
-            <div className='flex flex-col items-center p-4'>
-                <SelectorButtonGroup className='mt-6 mb-4'
-                                     selections={cognitiveLoadFiles}
+            <div className='flex flex-col items-center p-2'>
+                <SelectorButtonGroup selections={cognitiveLoadFiles}
                                      selectedValue={selectedCognitiveLoadFiles[1][1]}
                                      onSelect={({selectedName, selectedValue}) => {
                                          setSelectedCognitiveLoadFiles((prev) => [[prev[0][0], prev[0][1]], [selectedName, selectedValue]]);

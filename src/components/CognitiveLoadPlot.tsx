@@ -77,7 +77,7 @@ export default function CognitiveLoadPlot({selections}:{ selections: [[string, s
                           dataLoadingMessage='Loading Cognitive Load Plot Data...'
                           noDataFoundMessage='No data found for Cognitive Load Plot'
                           noDataFoundFn={() => plotData.length === 0}>
-        <Plot data={plotData} layout={plotLayout} width='100%' height='300px'/>
+        <Plot data={plotData} layout={plotLayout} width='100%' height='500px'/>
     </PlotContainer>;
 }
 

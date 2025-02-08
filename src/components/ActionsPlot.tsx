@@ -28,7 +28,7 @@ const ActionsPlot: FC = () => {
                         noDataFoundMessage='Complete simulation data is not available for the selected date. Please select a different date.'
                         noDataFoundFn={() => plotData.length === 0}>
       <ToggleGrid items={groupIcons} onChange={handleSelect}/>
-      <Plot data={plotData} layout={plotLayout} width='100%' height='500px'/>
+      <Plot data={plotData} layout={plotLayout} width='100%' height='600px'/>
   </PlotContainer>;
 };
 

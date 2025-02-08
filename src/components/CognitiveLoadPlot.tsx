@@ -3,96 +3,69 @@ import {Data, Layout} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
-import SelectorButtonGroup from '@components/SelectorButtonGroup';
-import {SelectorButtonGroupProps} from '@/types';
 
-async function fetchPlotData(dataSource: string, selectedDataSet: string) {
-    const dataSets = await fetchAndCacheDataSources(dataSource);
-    if(!dataSets){
+async function fetchPlotData([[averageName, averageFileId],[selectionName, selectionFileId]]:[[string, string],[string, string]]) {
+    if(!averageName||!selectionName){
         return [];
     }
-    const averageFileId = dataSets['Average'];
-    const selectedFileId = dataSets[selectedDataSet];
-        const averageDataCacheKey = `cognitiveLoad::${averageFileId}::average`;
+        const averageDataCacheKey = `cognitiveLoad::${averageFileId}::${averageName}`;
         const averageDataAsString = sessionStorage.getItem(averageDataCacheKey);
         if(averageDataAsString){
             const averageData = JSON.parse(averageDataAsString);
             averageData['line'] = { color: 'red' };
-            averageData['name'] = 'Average';
+            averageData['name'] = averageName;
 
-            const selectedDataResponse = await fetch(getPlotDataUrl(selectedFileId));
+            const selectedDataResponse = await fetch(getPlotDataUrl(selectionFileId));
             const selectedData = await selectedDataResponse.json();
             selectedData['line'] = { color: 'blue' };
-            selectedData['name'] = selectedDataSet;
-            return [dataSets, averageData, selectedData];
+            selectedData['name'] = selectionName;
+            return [averageData, selectedData];
         } else {
             const [averageResponse, selectedResponse] = await Promise.all([
                 fetch(getPlotDataUrl(averageFileId)),
-                fetch(getPlotDataUrl(selectedFileId))
+                fetch(getPlotDataUrl(selectionFileId))
             ]);
 
             const [averageData, selectedData] = await Promise.all([averageResponse.json(), selectedResponse.json()]);
             sessionStorage.setItem(averageDataCacheKey, JSON.stringify(averageData));
 
             averageData['line'] = {color: 'red'};
-            averageData['name'] = 'Average';
+            averageData['name'] = averageName;
 
             selectedData['line'] = {color: 'blue'};
-            selectedData['name'] = selectedDataSet;
+            selectedData['name'] = selectionName;
 
-            return [dataSets, averageData, selectedData];
+            return [averageData, selectedData];
         }
-}
-
-function getCognitiveLoadDataSourcesUrl(dataSourceId: string){
-    return `/api/data-sources/${dataSourceId}/cognitive-load`;
 }
 
 function getPlotDataUrl(fileId: string){
     return `/api/cognitive-load/plotly/${fileId}`;
 }
 
-async function fetchAndCacheDataSources(dataSourceId: string) {
-    const cacheKey = `cognitiveLoad::${dataSourceId}`;
-    const data = sessionStorage.getItem(cacheKey);
-    if (data) {
-        return JSON.parse(data);
-    }
-
-    const response = await fetch(getCognitiveLoadDataSourcesUrl(dataSourceId));
-    if(response?.status!=200){
-        return undefined;
-    }
-    const dataSources = await response.json();
-    sessionStorage.setItem(cacheKey, JSON.stringify(dataSources));
-    return dataSources;
-}
-
-export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }) {
+export default function CognitiveLoadPlot({selections}:{ selections: [[string, string], [string, string]] }) {
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [dataSets, setDataSets] = useState<SelectorButtonGroupProps['selections']>([]);
     const [plotData, setPlotData] = useState<Data[]>([]);
-    const {layout: actionsLayout} = useDataContext().actionsPlot;
+    const {layout: actionsLayout} = useDataContext().actionsPlotData;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
-    const [selectedDataSet, setSelectedDataSet] = useState<string>('Team Lead');
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (fileList: [[string, string], [string, string]]) => {
             try {
-                const [dataSets, averageData, selectedData] = await fetchPlotData(dataSource, selectedDataSet);
+                const [averageData, selectedData] = await fetchPlotData(fileList);
                 setPlotData([averageData, selectedData]);
-                setDataSets(Object.keys(dataSets).filter(set=>set!=='Average').map(set=>[set, set]));
             } catch (error) {
                 setPlotData([]);
                 console.log('error', error);
-            }
+            }finally {
                 setLoading(false);
+            }
         }
-        setLoading(true);
-        if(dataSource) {
-            fetchData().catch(console.error);
+        if(selections.length>1 && selections[0].length>0 && selections[1].length>0 && selections[0][1] && selections[1][1]){
+            setLoading(true);
+            fetchData(selections).catch(console.error);
         }
-    }, [dataSource, selectedDataSet]);
+    }, [selections]);
 
     useEffect(() => {
         const filteredShapes = actionsLayout.shapes?.filter(shape=>shape.y1 as number>0);
@@ -104,13 +77,6 @@ export default function CognitiveLoadPlot({ dataSource }: { dataSource: string }
                           dataLoadingMessage='Loading Cognitive Load Plot Data...'
                           noDataFoundMessage='No data found for Cognitive Load Plot'
                           noDataFoundFn={() => plotData.length === 0}>
-        <SelectorButtonGroup className='mt-6 mb-4'
-            selections={dataSets}
-            selectedValue={selectedDataSet}
-            onSelect={(selected) => {
-                setSelectedDataSet(selected);
-            }}
-        />
         <Plot data={plotData} layout={plotLayout} width='100%' height='300px'/>
     </PlotContainer>;
 }

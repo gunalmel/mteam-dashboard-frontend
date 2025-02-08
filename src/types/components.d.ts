@@ -23,8 +23,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 interface SelectorButtonGroupProps {
-    selections: [string, string][];
+    selections: Record<string,string>;
     selectedValue: string;
-    onSelect: (selectedValue: string) => void;
+    onSelect: ({selectedName:string, selectedValue: string}) => void;
     className?: string;
 }

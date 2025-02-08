@@ -1,17 +1,32 @@
 import { DataSourceProvider, useDataContext } from '@/contexts/DataSourceContext';
 import DropdownSelector from './DataSourceSelector';
-import {FC} from 'react';
+import React, {FC} from 'react';
 import CognitiveLoadPlot from '@components/CognitiveLoadPlot';
 import ActionsPlot from '@components/ActionsPlot';
+import SelectorButtonGroup from '@components/SelectorButtonGroup';
+import useCognitiveLoadVisualAttentionFiles from '@/hooks/useCognitiveLoadVisualAttentionFiles';
+import VisualAttentionPlot from '@components/VisualAttentionPlot';
 
 const DashboardContent: FC = () => {
-    const { selectedSource } = useDataContext();
+    const { selectedDataFilesContainerId } = useDataContext();
+    const {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId);
 
     return (
         <div className='flex flex-col justify-evenly'>
             <DropdownSelector/>
             <ActionsPlot/>
-            <CognitiveLoadPlot dataSource={selectedSource}/>
+            <div className='flex flex-col items-center p-4'>
+                <SelectorButtonGroup className='mt-6 mb-4'
+                                     selections={cognitiveLoadFiles}
+                                     selectedValue={selectedCognitiveLoadFiles[1][1]}
+                                     onSelect={({selectedName, selectedValue}) => {
+                                         setSelectedCognitiveLoadFiles((prev) => [[prev[0][0], prev[0][1]], [selectedName, selectedValue]]);
+                                         setSelectedVisualAttentionFile(visualAttentionFiles[selectedName])
+                                     }}
+                />
+            </div>
+            <CognitiveLoadPlot selections={selectedCognitiveLoadFiles}/>
+            <VisualAttentionPlot selectionFileId={selectedVisualAttentionFile}/>
         </div>
     );
 };

@@ -6,11 +6,11 @@ import {DataSourceContextType} from '@/types';
 const DataSourceContext = createContext<DataSourceContextType | undefined>(undefined);
 
 export const DataSourceProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [dataSources, selectedSource, setSelectedSource] = useDataSource();
-    const actionsPlot = useActionsData(selectedSource);
+    const [dataFilesContainers, selectedDataFilesContainerId, setSelectedDataFilesContainerId] = useDataSource();
+    const actionsPlotData = useActionsData(selectedDataFilesContainerId);
 
     return (
-        <DataSourceContext.Provider value={{ dataSources, selectedSource, setSelectedSource, actionsPlot }}>
+        <DataSourceContext.Provider value={{ dataFilesContainers, selectedDataFilesContainerId, setSelectedDataFilesContainerId, actionsPlotData }}>
             {children}
         </DataSourceContext.Provider>
     );

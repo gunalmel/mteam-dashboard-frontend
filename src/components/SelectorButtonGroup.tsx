@@ -25,19 +25,20 @@ const SelectorButtonGroup: FC<SelectorButtonGroupProps> = ({selections, selected
   const handleClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       const selectedButtonValue = event.currentTarget.value;
-      onSelect(selectedButtonValue);
+      const val = selectedButtonValue.split('::');
+      onSelect({selectedName: val[0], selectedValue: val[1]});
     },
     [onSelect]
   );
 
   return (
     <div className={clsx('selector-button-group', 'inline-flex rounded-md shadow-xs', className)} role='group'>
-      {selections.map(([value, label], index) => {
-        const position = index === 0 ? 'first' : index === selections.length - 1 ? 'last' : 'middle';
+      {Object.entries(selections).map(([label, value], index) => {
+        const position = index === 0 ? 'first' : index === Object.keys(selections).length - 1 ? 'last' : 'middle';
         return (
           <Button
             key={value}
-            value={value}
+            value={`${label}::${value}`}
             label={label}
             position={position}
             selected={selectedValue === value}

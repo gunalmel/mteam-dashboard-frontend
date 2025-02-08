@@ -7,10 +7,10 @@ interface DataSource {
 }
 
 interface DataSourceContextType {
-    dataSources: DataSource[];
-    selectedSource: string;
-    setSelectedSource: (source: string) => void,
-    actionsPlot: {data:Partial<ScatterData>[],
+    dataFilesContainers: DataSource[];
+    selectedDataFilesContainerId: string;
+    setSelectedDataFilesContainerId: (source: string) => void,
+    actionsPlotData: {data:Partial<ScatterData>[],
                   layout: Partial<Layout>,
                   isActionsLoading: boolean,
                   groupIcons: ImageToggleItem[],

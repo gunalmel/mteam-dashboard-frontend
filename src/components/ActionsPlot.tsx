@@ -7,7 +7,7 @@ import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
 
 const ActionsPlot: FC = () => {
-  const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = useDataContext().actionsPlot;
+  const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = useDataContext().actionsPlotData;
   const [plotData, setPlotData] = useState<Partial<ScatterData>[]>(data);
   const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layout);
 

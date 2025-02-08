@@ -8,7 +8,7 @@ export function PlotContainer({noDataFoundFn, noDataFoundMessage, dataLoadingMes
     isLoading: boolean,
     children: React.ReactNode
 }) {
-    return <div className={'flex flex-col items-center'} style={{position: 'relative'}}>
+    return <div className={'flex flex-col items-center mb-6'} style={{position: 'relative'}}>
         <PulseLoader isLoading={isLoading} text={dataLoadingMessage}/>
         {noDataFoundFn() ? <div className='p-8 text-center text-gray-600'>{noDataFoundMessage}</div> : children}
     </div>;

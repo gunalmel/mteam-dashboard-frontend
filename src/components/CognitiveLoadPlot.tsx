@@ -4,26 +4,26 @@ import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
 
-async function fetchPlotData([[averageName, averageFileId],[selectionName, selectionFileId]]:[[string, string],[string, string]]) {
+async function fetchPlotData([[averageName, averageFileUrl],[selectionName, selectionFileUrl]]:[[string, string],[string, string]]) {
     if(!averageName||!selectionName){
         return [];
     }
-        const averageDataCacheKey = `cognitiveLoad::${averageFileId}::${averageName}`;
+        const averageDataCacheKey = `cognitiveLoad::${averageFileUrl}::${averageName}`;
         const averageDataAsString = sessionStorage.getItem(averageDataCacheKey);
         if(averageDataAsString){
             const averageData = JSON.parse(averageDataAsString);
             averageData['line'] = { color: 'red' };
             averageData['name'] = averageName;
 
-            const selectedDataResponse = await fetch(getPlotDataUrl(selectionFileId));
+            const selectedDataResponse = await fetch(selectionFileUrl);
             const selectedData = await selectedDataResponse.json();
             selectedData['line'] = { color: 'blue' };
             selectedData['name'] = selectionName;
             return [averageData, selectedData];
         } else {
             const [averageResponse, selectedResponse] = await Promise.all([
-                fetch(getPlotDataUrl(averageFileId)),
-                fetch(getPlotDataUrl(selectionFileId))
+                fetch(averageFileUrl),
+                fetch(selectionFileUrl)
             ]);
 
             const [averageData, selectedData] = await Promise.all([averageResponse.json(), selectedResponse.json()]);
@@ -39,24 +39,20 @@ async function fetchPlotData([[averageName, averageFileId],[selectionName, selec
         }
 }
 
-function getPlotDataUrl(fileId: string){
-    return `/api/cognitive-load/plotly/${fileId}`;
-}
-
 function receivedSelections(selections: [[string, string], [string, string]]) {
     return selections.every(([first, second]) => first && second);
 }
 
-export default function CognitiveLoadPlot({selections}:{ selections: [[string, string], [string, string]] }) {
+export default function CognitiveLoadPlot({fileUrls}:{ fileUrls: [[string, string], [string, string]] }) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [plotData, setPlotData] = useState<Data[]>([]);
     const {layout: actionsLayout} = useDataContext().actionsPlotData;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
 
     useEffect(() => {
-        const fetchData = async (fileList: [[string, string], [string, string]]) => {
+        const fetchData = async (fileUrlList: [[string, string], [string, string]]) => {
             try {
-                const [averageData, selectedData] = await fetchPlotData(fileList);
+                const [averageData, selectedData] = await fetchPlotData(fileUrlList);
                 setPlotData([averageData, selectedData]);
             } catch (error) {
                 setPlotData([]);
@@ -65,17 +61,17 @@ export default function CognitiveLoadPlot({selections}:{ selections: [[string, s
                 setLoading(false);
             }
         }
-        if(receivedSelections(selections)){
+        if(receivedSelections(fileUrls)){
             setLoading(true);
-            fetchData(selections).catch(console.error);
+            fetchData(fileUrls).catch(console.error);
         }
         else {
             setPlotData([]);
         }
-    }, [selections]);
+    }, [fileUrls]);
 
     useEffect(() => {
-        if(receivedSelections(selections) && (plotData && plotData.length>0)){
+        if(receivedSelections(fileUrls) && (plotData && plotData.length>0)){
             const filteredShapes = actionsLayout.shapes?.filter(shape => shape.y1 as number > 0);
             const cognitivePlotLayout = {...layoutTemplate, shapes: filteredShapes, xaxis: actionsLayout.xaxis};
             setPlotLayout(cognitivePlotLayout);

@@ -1,9 +1,12 @@
 import {useEffect, useState} from 'react';
 import {SelectorButtonGroupProps} from '@/types';
 
-async function fetchAndCacheFileList(fileContainerId: string){
-    const cognitiveLoadCacheKey = `cognitiveLoad::${fileContainerId}`;
-    const visualAttentionCacheKey = `visualAttention::${fileContainerId}`;
+async function fetchAndCacheFileList(selectedDataFilesContainerUrl?: string){
+    if(!selectedDataFilesContainerUrl){
+        return undefined;
+    }
+    const cognitiveLoadCacheKey = `cognitiveLoad::${selectedDataFilesContainerUrl}`;
+    const visualAttentionCacheKey = `visualAttention::${selectedDataFilesContainerUrl}`;
     const cognitiveLoadFileString = sessionStorage.getItem(cognitiveLoadCacheKey);
     const visualAttentionFileString = sessionStorage.getItem(visualAttentionCacheKey);
     if (visualAttentionFileString && cognitiveLoadFileString) {
@@ -11,8 +14,8 @@ async function fetchAndCacheFileList(fileContainerId: string){
     }
 
     const [cognitiveLoadResponse ,visualAttentionResponse]  = await Promise.all(
-        [fetch(getFileListUrl('cognitiveLoad', fileContainerId)),
-        fetch(getFileListUrl('visualAttention', fileContainerId))
+        [fetch(getFileListUrl('cognitiveLoad', selectedDataFilesContainerUrl)),
+        fetch(getFileListUrl('visualAttention', selectedDataFilesContainerUrl))
         ]
     );
     if(cognitiveLoadResponse?.status!=200||visualAttentionResponse?.status!=200){
@@ -33,15 +36,15 @@ function getFileListUrl(dataSourceType: string, fileContainerId: string){
     return '';
 }
 
-function getCognitiveLoadDataSourcesUrl(dataSourceId: string){
-    return `/api/data-sources/${dataSourceId}/cognitive-load`;
+function getCognitiveLoadDataSourcesUrl(selectedDataFilesContainerUrl: string){
+    return `${selectedDataFilesContainerUrl}/cognitive-load`;
 }
 
-function getVisualAttentionDataSourcesUrl(dataSourceId: string){
-    return `/api/data-sources/${dataSourceId}/visual-attention`;
+function getVisualAttentionDataSourcesUrl(selectedDataFilesContainerUrl: string){
+    return `${selectedDataFilesContainerUrl}/visual-attention`;
 }
 
-export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId: string) {
+export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerUrl?: string) {
     const [cognitiveLoadFiles, setCognitiveLoadFiles] = useState<SelectorButtonGroupProps['selections']>({});
     const [selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles] = useState<[[string, string], [string, string]]>([['', ''], ['', '']]);
     const [visualAttentionFiles, setVisualAttentionFiles] = useState<SelectorButtonGroupProps['selections']>({});
@@ -49,7 +52,7 @@ export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesCo
 
     useEffect(() => {
         const fetchCognitiveLoadVisualAttentionFiles = async () => {
-            const dataFilesArray = await fetchAndCacheFileList(selectedDataFilesContainerId);
+            const dataFilesArray = await fetchAndCacheFileList(selectedDataFilesContainerUrl);
             if (dataFilesArray && dataFilesArray.length>1) {
                 const cognitiveFilesMap =  dataFilesArray[0] as Record<string, string>;
                 const visualAttentionFilesMap =  dataFilesArray[1] as Record<string, string>;
@@ -68,10 +71,10 @@ export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesCo
                 setSelectedVisualAttentionFile('');
             }
         }
-        if (selectedDataFilesContainerId) {
+        if (selectedDataFilesContainerUrl) {
             fetchCognitiveLoadVisualAttentionFiles().catch(console.error);
         }
-    }, [selectedDataFilesContainerId]);
+    }, [selectedDataFilesContainerUrl]);
 
     return {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile};
 }

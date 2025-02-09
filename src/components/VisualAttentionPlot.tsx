@@ -4,28 +4,27 @@ import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
 
-async function fetchPlotData(selectionFileId: string) {
-    if(!selectionFileId){
+async function fetchPlotData(fileUrl?: string) {
+    if(!fileUrl ){
         return [];
     }
-    const selectedDataResponse = await fetch(getPlotDataUrl(selectionFileId));
+    const selectedDataResponse = await fetch(fileUrl);
+    if(selectedDataResponse.status===404){
+        return [];
+    }
     return await selectedDataResponse.json();
 }
 
-function getPlotDataUrl(fileId: string){
-    return `/api/visual-attention/plotly/${fileId}`;
-}
-
-export default function VisualAttentionPlot({selectionFileId}:{ selectionFileId?: string }) {
+export default function VisualAttentionPlot({fileUrl}:{ fileUrl?: string }) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [plotData, setPlotData] = useState<Data[]>([]);
     const {layout: actionsLayout} = useDataContext().actionsPlotData;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
 
     useEffect(() => {
-        const fetchData = async (fileId: string) => {
+        const fetchData = async (fetchUrl: string) => {
             try {
-                const selectedData = await fetchPlotData(fileId);
+                const selectedData = await fetchPlotData(fetchUrl);
                 setPlotData(selectedData);
             } catch (error) {
                 setPlotData([]);
@@ -33,17 +32,17 @@ export default function VisualAttentionPlot({selectionFileId}:{ selectionFileId?
             }
             setLoading(false);
         }
-        if(selectionFileId){
+        if(fileUrl){
             setLoading(true);
-            fetchData(selectionFileId).catch(console.error);
+            fetchData(fileUrl).catch(console.error);
         }
         else {
             setPlotData([]);
         }
-    }, [selectionFileId]);
+    }, [fileUrl]);
 
     useEffect(() => {
-        if(selectionFileId && (plotData && plotData.length>0) && actionsLayout){
+        if(fileUrl && (plotData && plotData.length>0) && actionsLayout){
             const cognitivePlotLayout = {...layoutTemplate, xaxis: actionsLayout.xaxis};
             setPlotLayout(cognitivePlotLayout);
         }

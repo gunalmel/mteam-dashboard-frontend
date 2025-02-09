@@ -7,9 +7,34 @@ import SelectorButtonGroup from '@components/SelectorButtonGroup';
 import useCognitiveLoadVisualAttentionFiles from '@/hooks/useCognitiveLoadVisualAttentionFiles';
 import VisualAttentionPlot from '@components/VisualAttentionPlot';
 
+function getSelectedDataSourceUrl(dataFilesContainerId?: string){
+    if(!dataFilesContainerId){
+        return;
+    }
+    return `/api/data-sources/${dataFilesContainerId}`
+}
+
+function getCognitiveLoadPlotDataUrl(dataFilesContainerId: string|undefined, fileIds: [[string, string], [string, string]]):[[string, string], [string, string]]{
+    const baseUrl = getSelectedDataSourceUrl(dataFilesContainerId);
+    if(!baseUrl){
+        return [['',''],['','']];
+    }
+    return [
+        [fileIds[0][0],`${baseUrl}/cognitive-load/${fileIds[0][1]}`],
+        [fileIds[1][0],`${baseUrl}/cognitive-load/${fileIds[1][1]}`]
+    ];
+}
+
+function getVisualAttentionDataUrl(dataFilesContainerId: string|undefined, fileId?: string){
+    if(!dataFilesContainerId||!fileId) {
+        return;
+    }
+    return getSelectedDataSourceUrl(dataFilesContainerId) + `/visual-attention/${fileId}`;
+}
+
 const DashboardContent: FC = () => {
     const { selectedDataFilesContainerId } = useDataContext();
-    const {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId);
+    const {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(getSelectedDataSourceUrl(selectedDataFilesContainerId));
 
     return (
         <div className='flex flex-col justify-evenly'>
@@ -24,8 +49,8 @@ const DashboardContent: FC = () => {
                                      }}
                 />
             </div>
-            <CognitiveLoadPlot selections={selectedCognitiveLoadFiles}/>
-            <VisualAttentionPlot selectionFileId={selectedVisualAttentionFile}/>
+            <CognitiveLoadPlot fileUrls={getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles)}/>
+            <VisualAttentionPlot fileUrl={getVisualAttentionDataUrl(selectedDataFilesContainerId, selectedVisualAttentionFile??'')}/>
         </div>
     );
 };

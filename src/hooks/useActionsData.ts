@@ -10,7 +10,7 @@ export const useActionsData = (dataSource: string) => {
     const [isActionsLoading, setIsActionsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        const url = `/api/actions/plotly/${dataSource}`;
+        const url = `/api/data-sources/${dataSource}/actions`;
 
         const fetchData = async () => {
             try {

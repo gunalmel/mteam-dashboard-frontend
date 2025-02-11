@@ -1,11 +1,12 @@
 import { DataSourceProvider, useDataContext } from '@/contexts/DataSourceContext';
 import DataSourceSelector from './DataSourceSelector';
-import React, {FC} from 'react';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import CognitiveLoadPlot from '@components/CognitiveLoadPlot';
 import ActionsPlot from '@components/ActionsPlot';
 import SelectorButtonGroup from '@components/SelectorButtonGroup';
 import useCognitiveLoadVisualAttentionFiles from '@/hooks/useCognitiveLoadVisualAttentionFiles';
 import VisualAttentionPlot from '@components/VisualAttentionPlot';
+import VideoPlayer from '@components/VideoPlayer';
 
 function getSelectedDataSourceUrl(dataFilesContainerId?: string){
     if(!dataFilesContainerId){
@@ -34,12 +35,25 @@ function getVisualAttentionDataUrl(dataFilesContainerId: string|undefined, fileI
 
 const DashboardContent: FC = () => {
     const { selectedDataFilesContainerId } = useDataContext();
+    const [currentVideoTime, setCurrentVideoTime] = useState<number>(0);
     const {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(getSelectedDataSourceUrl(selectedDataFilesContainerId));
+    const videoSeekTo = useRef(0);
+    const memoizedFileUrls = useMemo(() => getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles), [selectedDataFilesContainerId,selectedCognitiveLoadFiles]);
+
+    const handleVideoTimelineUpdate = useCallback((time: number) => {
+        setCurrentVideoTime(time);
+    }, []);
 
     return (
         <div className='flex flex-col justify-evenly'>
+            <VideoPlayer
+                videoElementId='video'
+                onTimeUpdate={handleVideoTimelineUpdate}
+                seekTo={videoSeekTo.current}
+                videoUrl={selectedDataFilesContainerId?`/api/data-sources/${selectedDataFilesContainerId}/video`:undefined}
+            />
             <DataSourceSelector/>
-            <ActionsPlot/>
+            <ActionsPlot currentTime={currentVideoTime}/>
             <div className='flex flex-col items-center p-2'>
                 <SelectorButtonGroup selections={cognitiveLoadFiles}
                                      selectedValue={selectedCognitiveLoadFiles[1][1]}
@@ -49,8 +63,8 @@ const DashboardContent: FC = () => {
                                      }}
                 />
             </div>
-            <CognitiveLoadPlot fileUrls={getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles)}/>
-            <VisualAttentionPlot fileUrl={getVisualAttentionDataUrl(selectedDataFilesContainerId, selectedVisualAttentionFile??'')}/>
+            <CognitiveLoadPlot currentTime={currentVideoTime} fileUrls={memoizedFileUrls}/>
+            <VisualAttentionPlot currentTime={currentVideoTime} fileUrl={getVisualAttentionDataUrl(selectedDataFilesContainerId, selectedVisualAttentionFile??'')}/>
         </div>
     );
 };

@@ -66,7 +66,7 @@ const config= {
     proxy: [
       {
         context: ['/api'],
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8080/api',
         pathRewrite: {'^/api': ''},
         changeOrigin: true,
       },

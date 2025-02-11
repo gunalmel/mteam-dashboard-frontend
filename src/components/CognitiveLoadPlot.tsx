@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Data, Layout} from 'plotly.js-basic-dist';
+import {Data, Layout, ScatterData} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
+import addTimeTracer from '@/addVideoTimeTracerToPlot';
 
 async function fetchPlotData([[averageName, averageFileUrl],[selectionName, selectionFileUrl]]:[[string, string],[string, string]]) {
     if(!averageName||!selectionName){
@@ -43,11 +44,12 @@ function receivedSelections(selections: [[string, string], [string, string]]) {
     return selections.every(([first, second]) => first && second);
 }
 
-export default function CognitiveLoadPlot({fileUrls}:{ fileUrls: [[string, string], [string, string]] }) {
+export default function CognitiveLoadPlot({fileUrls, currentTime}: { fileUrls: [[string, string], [string, string]], currentTime: number }) {
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [plotData, setPlotData] = useState<Data[]>([]);
+    const [cognitiveLoadData, setPlotData] = useState<ScatterData[]>([]);
     const {layout: actionsLayout} = useDataContext().actionsPlotData;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
+    const plotData: Data[] = addTimeTracer(currentTime, cognitiveLoadData, {yMin:0, yMax: plotLayout.shapes?Number(plotLayout.shapes[0]?.y1):undefined, color: 'red', width: 2});
 
     useEffect(() => {
         const fetchData = async (fileUrlList: [[string, string], [string, string]]) => {

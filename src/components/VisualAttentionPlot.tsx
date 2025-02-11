@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Data, Layout} from 'plotly.js-basic-dist';
+import {Data, Layout, ScatterData} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
+import addTimeTracer from '@/addVideoTimeTracerToPlot';
 
 async function fetchPlotData(fileUrl?: string) {
     if(!fileUrl ){
@@ -15,11 +16,12 @@ async function fetchPlotData(fileUrl?: string) {
     return await selectedDataResponse.json();
 }
 
-export default function VisualAttentionPlot({fileUrl}:{ fileUrl?: string }) {
+export default function VisualAttentionPlot({fileUrl, currentTime}: { fileUrl?: string, currentTime: number }) {
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [plotData, setPlotData] = useState<Data[]>([]);
+    const [visualAttentionData, setPlotData] = useState<ScatterData[]>([]);
     const {layout: actionsLayout} = useDataContext().actionsPlotData;
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layoutTemplate);
+    const plotData: Data[] = addTimeTracer(currentTime, visualAttentionData, {color:'#610C04'} );
 
     useEffect(() => {
         const fetchData = async (fetchUrl: string) => {

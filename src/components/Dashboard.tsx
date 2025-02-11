@@ -7,6 +7,7 @@ import SelectorButtonGroup from '@components/SelectorButtonGroup';
 import useCognitiveLoadVisualAttentionFiles from '@/hooks/useCognitiveLoadVisualAttentionFiles';
 import VisualAttentionPlot from '@components/VisualAttentionPlot';
 import VideoPlayer from '@components/VideoPlayer';
+import StickyDiv from '@components/StickyDiv';
 
 function getSelectedDataSourceUrl(dataFilesContainerId?: string){
     if(!dataFilesContainerId){
@@ -46,12 +47,14 @@ const DashboardContent: FC = () => {
 
     return (
         <div className='flex flex-col justify-evenly'>
+            <StickyDiv>
             <VideoPlayer
                 videoElementId='video'
                 onTimeUpdate={handleVideoTimelineUpdate}
                 seekTo={videoSeekTo.current}
                 videoUrl={selectedDataFilesContainerId?`/api/data-sources/${selectedDataFilesContainerId}/video`:undefined}
             />
+            </StickyDiv>
             <DataSourceSelector/>
             <ActionsPlot currentTime={currentVideoTime}/>
             <div className='flex flex-col items-center p-2'>

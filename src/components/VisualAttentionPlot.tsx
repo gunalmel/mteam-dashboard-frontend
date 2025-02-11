@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Data, Layout, ScatterData} from 'plotly.js-basic-dist';
+import {Data, Layout, ScatterData, Shape} from 'plotly.js-basic-dist';
 import {useDataContext} from '@/contexts/DataSourceContext';
 import Plot from '@components/Plot';
 import {PlotContainer} from '@components/PlotContainer';
@@ -53,6 +53,8 @@ export default function VisualAttentionPlot({fileUrl, currentTime}: { fileUrl?: 
         }
     }, [plotData, actionsLayout]);
 
+    plotLayout.shapes = generateVerticalLineShapes(actionsLayout.shapes || []);
+
     return <PlotContainer isLoading={isLoading}
                           dataLoadingMessage='Loading Visual Attention Plot Data...'
                           noDataFoundMessage='No data found for Visual Attention Plot'
@@ -60,6 +62,27 @@ export default function VisualAttentionPlot({fileUrl, currentTime}: { fileUrl?: 
         <Plot data={plotData} layout={plotLayout} width='100%' height='500px'/>
     </PlotContainer>;
 }
+
+const generateVerticalLineShapes = (shapesArray: Partial<Shape>[]): Partial<Shape>[] => {
+    // Extract unique x1 values for vertical lines
+    const uniqueX1Values = Array.from(new Set(shapesArray.map((shape) => shape.x1)));
+
+    // Create vertical line shapes for each unique x1 value
+    return uniqueX1Values.map((x1Value) => ({
+        type: 'line',
+        x0: x1Value,
+        x1: x1Value,
+        y0: 0,
+        y1: 1,
+        xref: 'x',
+        yref: 'paper',
+        line: {
+            color: 'black',
+            width: 2,
+            dash: 'dot'
+        }
+    })) as Partial<Shape>[];
+};
 
 const layoutTemplate: Partial<Layout> = {
     'title': {

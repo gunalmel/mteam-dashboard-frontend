@@ -51,14 +51,14 @@ export default function VisualAttentionPlot({fileUrl, currentTime}: { fileUrl?: 
         else {
             setPlotLayout({});
         }
-    }, [plotData, actionsLayout]);
+    }, [actionsLayout]);
 
     plotLayout.shapes = generateVerticalLineShapes(actionsLayout.shapes || []);
 
     return <PlotContainer isLoading={isLoading}
                           dataLoadingMessage='Loading Visual Attention Plot Data...'
                           noDataFoundMessage='No data found for Visual Attention Plot'
-                          noDataFoundFn={() => plotData.length === 0}>
+                          noDataFoundFn={() => plotData.length < 2}>
         <Plot data={plotData} layout={plotLayout} width='100%' height='500px'/>
     </PlotContainer>;
 }

@@ -44,37 +44,82 @@ function getVisualAttentionDataSourcesUrl(selectedDataFilesContainerUrl: string)
     return `${selectedDataFilesContainerUrl}/visual-attention`;
 }
 
-export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerUrl?: string) {
+export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId?: string) {
+    const selectedDataFilesContainerUrl = getSelectedDataSourceUrl(selectedDataFilesContainerId)
     const [cognitiveLoadFiles, setCognitiveLoadFiles] = useState<SelectorButtonGroupProps['selections']>({});
     const [selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles] = useState<[[string, string], [string, string]]>([['', ''], ['', '']]);
     const [visualAttentionFiles, setVisualAttentionFiles] = useState<SelectorButtonGroupProps['selections']>({});
     const [selectedVisualAttentionFile, setSelectedVisualAttentionFile] = useState<string>();
+    const [cognitivePlotDataUrls, setCognitivePlotDataUrls] = useState<[[string, string], [string, string]]>([['',''],['','']]);
+    const [visualAttentionDataUrl, setVisualAttentionDataUrl] = useState<string|undefined>();
 
     useEffect(() => {
         const fetchCognitiveLoadVisualAttentionFiles = async () => {
             const dataFilesArray = await fetchAndCacheFileList(selectedDataFilesContainerUrl);
-            if (dataFilesArray && dataFilesArray.length>1) {
-                const cognitiveFilesMap =  dataFilesArray[0] as Record<string, string>;
-                const visualAttentionFilesMap =  dataFilesArray[1] as Record<string, string>;
-                const filteredCognitiveLoadDataSetMap = {...cognitiveFilesMap};
-                delete filteredCognitiveLoadDataSetMap['Average'];
-                setCognitiveLoadFiles(filteredCognitiveLoadDataSetMap);
-                setVisualAttentionFiles(visualAttentionFilesMap);
-                const defaultSelection = Object.entries(filteredCognitiveLoadDataSetMap)[0];
-                setSelectedCognitiveLoadFiles([['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]);
-                setSelectedVisualAttentionFile(visualAttentionFilesMap[defaultSelection[0]]);
-            }
-            else {
-                setCognitiveLoadFiles({});
-                setVisualAttentionFiles({});
-                setSelectedCognitiveLoadFiles([['', ''], ['', '']]);
-                setSelectedVisualAttentionFile('');
-            }
+                if (dataFilesArray && dataFilesArray.length > 1) {
+                    const cognitiveFilesMap = dataFilesArray[0] as Record<string, string>;
+                    const visualAttentionFilesMap = dataFilesArray[1] as Record<string, string>;
+                    const filteredCognitiveLoadDataSetMap = {...cognitiveFilesMap};
+                    delete filteredCognitiveLoadDataSetMap['Average'];
+                    setCognitiveLoadFiles(filteredCognitiveLoadDataSetMap);
+                    setVisualAttentionFiles(visualAttentionFilesMap);
+                    const defaultSelection = Object.entries(filteredCognitiveLoadDataSetMap)[0];
+                    setSelectedCognitiveLoadFiles([['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]);
+                    setSelectedVisualAttentionFile(visualAttentionFilesMap[defaultSelection[0]]);
+                    setCognitivePlotDataUrls(getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, [['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]));
+                    setVisualAttentionDataUrl(getVisualAttentionDataUrl(selectedDataFilesContainerId, visualAttentionFilesMap[defaultSelection[0]]));
+                } else {
+                    setCognitiveLoadFiles({});
+                    setVisualAttentionFiles({});
+                    setSelectedCognitiveLoadFiles([['', ''], ['', '']]);
+                    setSelectedVisualAttentionFile('');
+                    setCognitivePlotDataUrls([['',''],['','']]);
+                    setVisualAttentionDataUrl(undefined);
+                }
         }
         if (selectedDataFilesContainerUrl) {
             fetchCognitiveLoadVisualAttentionFiles().catch(console.error);
         }
+        else{
+            setCognitiveLoadFiles({});
+            setVisualAttentionFiles({});
+            setSelectedCognitiveLoadFiles([['', ''], ['', '']]);
+            setSelectedVisualAttentionFile('');
+            setCognitivePlotDataUrls([['',''],['','']]);
+            setVisualAttentionDataUrl(undefined);
+        }
     }, [selectedDataFilesContainerUrl]);
 
-    return {cognitiveLoadFiles, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile};
+    useEffect(() => {
+        setCognitivePlotDataUrls(getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles));
+        setVisualAttentionDataUrl(getVisualAttentionDataUrl(selectedDataFilesContainerId, selectedVisualAttentionFile));
+    },[selectedCognitiveLoadFiles, selectedVisualAttentionFile]);
+
+    return {cognitiveLoadFiles, cognitivePlotDataUrls, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionDataUrl, visualAttentionFiles, selectedVisualAttentionFile, setSelectedVisualAttentionFile};
+}
+
+
+function getSelectedDataSourceUrl(dataFilesContainerId?: string){
+    if(!dataFilesContainerId){
+        return;
+    }
+    return `/api/data-sources/${dataFilesContainerId}`
+}
+
+function getCognitiveLoadPlotDataUrl(dataFilesContainerId: string|undefined, fileIds: [[string, string], [string, string]]):[[string, string], [string, string]]{
+    const baseUrl = getSelectedDataSourceUrl(dataFilesContainerId);
+    if(!baseUrl){
+        return [['',''],['','']];
+    }
+    return [
+        [fileIds[0][0],fileIds[0][1]?`${baseUrl}/cognitive-load/${fileIds[0][1]}`:''],
+        [fileIds[1][0],fileIds[1][1]?`${baseUrl}/cognitive-load/${fileIds[1][1]}`:'']
+    ];
+}
+
+function getVisualAttentionDataUrl(dataFilesContainerId: string|undefined, fileId?: string){
+    if(!dataFilesContainerId||!fileId) {
+        return;
+    }
+    return getSelectedDataSourceUrl(dataFilesContainerId) + `/visual-attention/${fileId}`;
 }

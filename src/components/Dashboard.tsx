@@ -8,17 +8,23 @@ import useCognitiveLoadVisualAttentionFiles from '@/hooks/useCognitiveLoadVisual
 import VisualAttentionPlot from '@components/VisualAttentionPlot';
 import VideoPlayer from '@components/VideoPlayer';
 import StickyDiv from '@components/StickyDiv';
-
+import {Today} from '@/TodayDateTimeConverter';
 
 const DashboardContent: FC = () => {
-    const { selectedDataFilesContainerId, actionsPlotData } = useDataContext();
-    const [currentVideoTime, setCurrentVideoTime] = useState<number>(0);
-    const {cognitiveLoadFiles, cognitivePlotDataUrls, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, visualAttentionDataUrl, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId);
     const videoSeekTo = useRef(0);
+    const [currentVideoTime, setCurrentVideoTime] = useState<number>(0);
+    const { selectedDataFilesContainerId, actionsPlotData } = useDataContext();
+    const {cognitiveLoadFiles, cognitivePlotDataUrls, selectedCognitiveLoadFiles, setSelectedCognitiveLoadFiles, visualAttentionFiles, visualAttentionDataUrl, setSelectedVisualAttentionFile} = useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId);
 
     const handleVideoTimelineUpdate = useCallback((time: number) => {
         setCurrentVideoTime(time);
     }, []);
+
+    const handleActionsPlotTimePointClick = (dateTimeString: string) => {
+        const timeSecs = Today.timeStampStringToSeconds(dateTimeString);
+        videoSeekTo.current = timeSecs;
+        setCurrentVideoTime(timeSecs);
+    };
 
     return (
         <div className='flex flex-col justify-evenly'>
@@ -31,7 +37,7 @@ const DashboardContent: FC = () => {
             />
             </StickyDiv>
             <DataSourceSelector/>
-            <ActionsPlot actionsPlotData={actionsPlotData} currentTime={currentVideoTime}/>
+            <ActionsPlot actionsPlotData={actionsPlotData} currentTime={currentVideoTime} onClick={handleActionsPlotTimePointClick}/>
             <div className='flex flex-col items-center p-2'>
                 <SelectorButtonGroup selections={cognitiveLoadFiles}
                                      selectedValue={selectedCognitiveLoadFiles[1][1]}

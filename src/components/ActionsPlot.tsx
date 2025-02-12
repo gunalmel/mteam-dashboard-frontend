@@ -8,7 +8,7 @@ import addTimeTracer from '@/addVideoTimeTracerToPlot';
 import {Data} from 'plotly.js';
 import {ActionsPlotData} from '@/types';
 
-const ActionsPlot: FC<{actionsPlotData:ActionsPlotData, currentTime: number}> = ({actionsPlotData, currentTime}) => {
+const ActionsPlot: FC<{actionsPlotData:ActionsPlotData, currentTime: number, onClick:(dateTimeString: string)=>void}> = ({actionsPlotData, currentTime, onClick}) => {
     const {data, layout, isActionsLoading, groupIcons, selectedActions, setSelectedActions} = actionsPlotData;//useDataContext().actionsPlotData;
     const [actionsData, setPlotData] = useState<Partial<ScatterData>[]>(data);
     const [plotLayout, setPlotLayout] = useState<Partial<Layout>>(layout);
@@ -31,7 +31,7 @@ const ActionsPlot: FC<{actionsPlotData:ActionsPlotData, currentTime: number}> = 
                           noDataFoundMessage='Complete simulation data is not available for the selected date. Please select a different date.'
                           noDataFoundFn={() => plotData.length < 2}>
         <ToggleGrid items={groupIcons} onChange={handleSelect}/>
-        <Plot data={plotData} layout={plotLayout} width='100%' height='600px'/>
+        <Plot data={plotData} layout={plotLayout} onClick={onClick} width='100%' height='600px'/>
     </PlotContainer>;
 };
 

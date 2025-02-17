@@ -10,6 +10,10 @@ async function fetchPlotData(fileUrl?: string) {
         return [];
     }
     const selectedDataResponse = await fetch(fileUrl);
+    if(selectedDataResponse.status===500){
+        console.error('Error fetching data: ', selectedDataResponse.url);
+        return [];
+    }
     if(selectedDataResponse.status===404){
         return [];
     }

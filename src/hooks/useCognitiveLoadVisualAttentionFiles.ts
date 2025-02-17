@@ -44,6 +44,10 @@ function getVisualAttentionDataSourcesUrl(selectedDataFilesContainerUrl: string)
     return `${selectedDataFilesContainerUrl}/visual-attention`;
 }
 
+function urlsNotChanged(prevUrls: [[string, string], [string, string]], urls: [[string, string], [string, string]]){
+    return prevUrls[0][0]===urls[0][0]&&prevUrls[0][1]===urls[0][1]&&prevUrls[1][0]===urls[1][0]&&prevUrls[1][1]===urls[1][1];
+}
+
 export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesContainerId?: string) {
     const selectedDataFilesContainerUrl = getSelectedDataSourceUrl(selectedDataFilesContainerId)
     const [cognitiveLoadFiles, setCognitiveLoadFiles] = useState<SelectorButtonGroupProps['selections']>({});
@@ -66,7 +70,10 @@ export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesCo
                     const defaultSelection = Object.entries(filteredCognitiveLoadDataSetMap)[0];
                     setSelectedCognitiveLoadFiles([['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]);
                     setSelectedVisualAttentionFile(visualAttentionFilesMap[defaultSelection[0]]);
-                    setCognitivePlotDataUrls(getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, [['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]));
+                    setCognitivePlotDataUrls((prevUrls)=> {
+                        const urls = getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, [['Average', cognitiveFilesMap['Average']], [defaultSelection[0], defaultSelection[1]]]);
+                        return urlsNotChanged(prevUrls, urls)?prevUrls:urls;
+                    });
                     setVisualAttentionDataUrl(getVisualAttentionDataUrl(selectedDataFilesContainerId, visualAttentionFilesMap[defaultSelection[0]]));
                 } else {
                     setCognitiveLoadFiles({});
@@ -91,7 +98,10 @@ export default function useCognitiveLoadVisualAttentionFiles(selectedDataFilesCo
     }, [selectedDataFilesContainerUrl]);
 
     useEffect(() => {
-        setCognitivePlotDataUrls(getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles));
+        setCognitivePlotDataUrls((prevUrls)=> {
+            const urls = getCognitiveLoadPlotDataUrl(selectedDataFilesContainerId, selectedCognitiveLoadFiles);
+            return urlsNotChanged(prevUrls, urls)?prevUrls:urls;
+        });
         setVisualAttentionDataUrl(getVisualAttentionDataUrl(selectedDataFilesContainerId, selectedVisualAttentionFile));
     },[selectedCognitiveLoadFiles, selectedVisualAttentionFile]);
 
